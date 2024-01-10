@@ -39,7 +39,6 @@ struct [[gnu::packed]] primary_header_s
     uint16_t packet_sequence_count                : 14;
     uint16_t packet_data_length                   : 16;
 };
-
 class space_packet
 {
   protected:
