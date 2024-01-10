@@ -29,12 +29,12 @@ enum class sequence_flags_e : uint8_t
     unsegmented         = 0b11
 };
 
-struct [[gnu::packed]] primary_header
+struct [[gnu::packed]] primary_header_s
 {
     uint8_t packet_version_number                 : 3;
     packet_type_e packet_type                     : 1;
     secondary_header_flag_e secondary_header_flag : 1;
-    uint8_t APID                                  : 11;
+    uint16_t APID                                  : 11;
     sequence_flags_e sequence_flags               : 2;
     uint16_t packet_sequence_count                : 14;
     uint16_t packet_data_length;
@@ -43,13 +43,14 @@ struct [[gnu::packed]] primary_header
 class space_packet
 {
   protected:
-    primary_header space_packet_primary_header;
-    std::vector<std::byte> space_packet_payload;
+    primary_header_s primary_header;
+    std::vector<std::byte> payload;
 
   public:
-    space_packet(std::vector<std::byte> raw_data);
-    space_packet(primary_header primary_header, std::vector<std::byte> payload);
-    primary_header get_primary_header();
+    space_packet(const std::vector<std::byte> &raw_data);
+    space_packet(const primary_header_s &primary_header, const std::vector<std::byte> &payload);
+    primary_header_s get_primary_header();
+    std::vector<std::byte> get_payload();
     std::vector<std::byte> get_raw_packet();
 };
 
