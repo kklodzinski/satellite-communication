@@ -43,10 +43,12 @@ class space_packet
 {
   protected:
     primary_header space_packet_primary_header;
-    std::vector<std::byte> space_packet_raw_data;
+    std::vector<std::byte> space_packet_raw_packet;
 
   public:
     space_packet(std::vector<std::byte> raw_data);
+    primary_header get_primary_header();
+    std::vector<std::byte> get_raw_packet();
 };
 
 } // namespace ccsds_space_packet
