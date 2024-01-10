@@ -1,4 +1,5 @@
-ccsds_space_packet/build
+**/build
+build
 .vscode
 CMakeLists.txt.user
 CMakeCache.txt
