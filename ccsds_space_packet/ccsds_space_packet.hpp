@@ -34,10 +34,10 @@ struct [[gnu::packed]] primary_header_s
     uint8_t packet_version_number                 : 3;
     packet_type_e packet_type                     : 1;
     secondary_header_flag_e secondary_header_flag : 1;
-    uint16_t APID                                  : 11;
+    uint16_t APID                                 : 11;
     sequence_flags_e sequence_flags               : 2;
     uint16_t packet_sequence_count                : 14;
-    uint16_t packet_data_length;
+    uint16_t packet_data_length                   : 16;
 };
 
 class space_packet
