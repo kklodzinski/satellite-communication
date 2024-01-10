@@ -41,7 +41,7 @@ struct [[gnu::packed]] primary_header
 
 class space_packet
 {
-  private:
+  protected:
     primary_header space_packet_primary_header;
     std::vector<std::byte> space_packet_raw_data;
 
