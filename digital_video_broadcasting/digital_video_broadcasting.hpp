@@ -1,12 +1,12 @@
 #ifndef DIGITAL_VIDEO_BROADCASTING
 #define DIGITAL_VIDEO_BROADCASTING
 
+#include "crc_library.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <stdexcept>
 #include <vector>
-#include "crc_library.hpp"
 
 namespace digital_video_broadasting
 {
@@ -74,9 +74,10 @@ struct base_band_header_s
 class dvb
 {
   protected:
-  crc_library::crc<uint8_t, 0xD5, 0x00, false, false, 0x00> crc;
-  base_band_header_s base_band_header;
-  std::vector<std::byte> data_field;
+    crc_library::crc<uint8_t, 0xD5, 0x00, false, false, 0x00> crc;
+    base_band_header_s base_band_header;
+    std::vector<std::byte> data_field;
+
   public:
     dvb(const std::vector<std::byte> &raw_data);
     dvb(const base_band_header_s &base_band_header, const std::vector<std::byte> &data_field);

@@ -37,7 +37,7 @@ class crc
     static constexpr std::array<T, 256> lookup_table = create_LUT();
     static constexpr T reverse_bits(T num, T size) noexcept
     {
-        T count = sizeof(num) * 8 - 1;
+        T count       = sizeof(num) * 8 - 1;
         T reverse_num = num;
         num >>= 1;
         while (num)
@@ -62,7 +62,7 @@ class crc
             if (reflection_in)
             {
                 T reversed = reverse_bits(static_cast<T>(data[i]), size) >> (size - 8);
-                byte = reversed ^ (crc >> (size - 8));
+                byte       = reversed ^ (crc >> (size - 8));
             }
             else
             {
@@ -80,4 +80,4 @@ class crc
         }
     }
 };
-} // namespace lib::crc
+} // namespace crc_library

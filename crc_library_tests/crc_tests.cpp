@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
 #include <crc_library/crc_library.hpp>
+#include <gtest/gtest.h>
 #include <vector>
 
 std::vector<std::byte> data{std::byte{0x31}, std::byte{0x32}, std::byte{0x33}, std::byte{0x34}, std::byte{0x35},
