@@ -39,7 +39,7 @@ std::vector<std::byte> dvb::get_data_field()
     return data_field;
 }
 
-std::vector<std::byte> dvb::get_raw_packet(uint packet_length)
+std::vector<std::byte> dvb::get_raw_packet(const uint &packet_length)
 {
     uint32_t offset = sizeof(base_band_header_s);
     std::vector<std::byte> output(sizeof(offset));
