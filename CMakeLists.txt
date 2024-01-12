@@ -7,6 +7,6 @@ enable_testing()
 
 add_subdirectory(ccsds_space_packet)
 add_subdirectory(ccsds_space_packet_tests)
-add_subdirectory(base_band_frame)
+add_subdirectory(dvb_base_band_frame)
 add_subdirectory(crc_library)
 add_subdirectory(crc_library_tests)
