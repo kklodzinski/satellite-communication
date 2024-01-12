@@ -61,7 +61,7 @@ struct [[gnu::packed]] matype_s
     uint8_t matype_2                                                                : 8;
 };
 
-struct base_band_header_s
+struct [[gnu::packed]] base_band_header_s
 {
     matype_s matype;
     uint16_t user_packet_length;
