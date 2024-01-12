@@ -1,7 +1,7 @@
-#include "digital_video_broadcasting.hpp"
+#include "base_band_frame.hpp"
 namespace digital_video_broadasting
 {
-dvb::dvb(const std::vector<std::byte> &raw_data)
+base_band_frame::base_band_frame(const std::vector<std::byte> &raw_data)
 {
     // Get the header from the bytes
     std::memcpy(&base_band_header, raw_data.data(), sizeof(base_band_header_s));
@@ -18,7 +18,7 @@ dvb::dvb(const std::vector<std::byte> &raw_data)
     data_field.insert(data_field.begin(), raw_data.begin(), raw_data.begin() + base_band_header.data_field_length);
 }
 
-dvb::dvb(const base_band_header_s &header, const std::vector<std::byte> &data)
+base_band_frame::base_band_frame(const base_band_header_s &header, const std::vector<std::byte> &data)
     : base_band_header(header), data_field(data)
 {
     // Set the data_filed_length based on the provided data_filed
@@ -30,17 +30,17 @@ dvb::dvb(const base_band_header_s &header, const std::vector<std::byte> &data)
     base_band_header.crc_8 = crc.calculate_crc(calculate_header_crc);
 }
 
-base_band_header_s dvb::get_base_band_header()
+base_band_header_s base_band_frame::get_base_band_header()
 {
     return base_band_header;
 }
 
-std::vector<std::byte> dvb::get_data_field()
+std::vector<std::byte> base_band_frame::get_data_field()
 {
     return data_field;
 }
 
-std::vector<std::byte> dvb::get_raw_packet(const uint &packet_length)
+std::vector<std::byte> base_band_frame::get_raw_packet(const uint &packet_length)
 {
     uint32_t offset = sizeof(base_band_header_s);
     std::vector<std::byte> output(sizeof(offset));

@@ -1,5 +1,5 @@
-#ifndef DIGITAL_VIDEO_BROADCASTING
-#define DIGITAL_VIDEO_BROADCASTING
+#ifndef BASE_BAND_FRAME
+#define BASE_BAND_FRAME
 
 #include "crc_library.hpp"
 #include <cstddef>
@@ -71,7 +71,7 @@ struct base_band_header_s
     uint8_t crc_8;
 };
 
-class dvb
+class base_band_frame
 {
   protected:
     crc_library::crc<uint8_t, 0xD5, 0x00, false, false, 0x00> crc;
@@ -79,8 +79,8 @@ class dvb
     std::vector<std::byte> data_field;
 
   public:
-    dvb(const std::vector<std::byte> &raw_data);
-    dvb(const base_band_header_s &base_band_header, const std::vector<std::byte> &data_field);
+    base_band_frame(const std::vector<std::byte> &raw_data);
+    base_band_frame(const base_band_header_s &base_band_header, const std::vector<std::byte> &data_field);
     base_band_header_s get_base_band_header();
     std::vector<std::byte> get_data_field();
     std::vector<std::byte> get_raw_packet(const uint &packet_length);
