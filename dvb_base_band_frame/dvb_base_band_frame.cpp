@@ -15,8 +15,9 @@ base_band_frame::base_band_frame(const std::vector<std::byte> &raw_data)
         std::string error_message = "CRC check failed! "; 
         throw std::runtime_error(error_message);
     }
+    uint32_t offset = sizeof(base_band_header_s);
     // Get the data_field from the bytes without the padding
-    data_field.insert(data_field.begin(), raw_data.begin(), raw_data.begin() + base_band_header.data_field_length);
+    data_field.insert(data_field.begin(), raw_data.begin()+offset, raw_data.begin()+ offset + base_band_header.data_field_length);
 }
 
 base_band_frame::base_band_frame(const base_band_header_s &header, const std::vector<std::byte> &data)
@@ -44,8 +45,8 @@ std::vector<std::byte> base_band_frame::get_data_field()
 std::vector<std::byte> base_band_frame::get_raw_packet(const uint &packet_length)
 {
     uint32_t offset = sizeof(base_band_header_s);
-    std::vector<std::byte> output(sizeof(offset));
-    std::memcpy(output.data(), &base_band_header, offset);
+    std::vector<std::byte> output(offset);
+    std::memcpy(output.data(), &base_band_header, sizeof(base_band_header_s));
     output.insert(output.end(), data_field.begin(), data_field.end());
     if (output.size() != packet_length)
     {
