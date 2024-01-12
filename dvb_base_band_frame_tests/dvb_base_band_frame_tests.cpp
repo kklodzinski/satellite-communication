@@ -9,7 +9,7 @@ std::vector<std::byte> data_field{std::byte{0x1}, std::byte{0x2}, std::byte{0x3}
 std::vector<std::byte> raw_data{std::byte{0x8F}, std::byte{0xFF}, std::byte{0x0A}, std::byte{0x00}, std::byte{0x0A}, std::byte{0x00}, std::byte{0x47}, std::byte{0xFF}, std::byte{0xFF}, std::byte{0x61},std::byte{0x1}, std::byte{0x2}, std::byte{0x3}, std::byte{0x4}, std::byte{0x5},
                                   std::byte{0x6}, std::byte{0x7}, std::byte{0x8}, std::byte{0x9}, std::byte{0xA}};
 
-TEST(DVB, RAW_DATA_TO_PRIMARY_HEADER)
+TEST(DVB, RAW_DATA_TO_HEADER)
 {
     digital_video_broadasting::base_band_frame temporary(raw_data);
     digital_video_broadasting::base_band_header_s actual_header = temporary.get_base_band_header();
@@ -26,6 +26,55 @@ TEST(DVB, RAW_DATA_TO_PRIMARY_HEADER)
     ASSERT_EQ(actual_header.user_packet_sync, base_band_header.user_packet_sync);
     ASSERT_EQ(actual_header.sync_distance, base_band_header.sync_distance);
     ASSERT_EQ(actual_header.crc_8, base_band_header.crc_8);
+}
+
+TEST(DVB, RAW_DATA_TO_DATA_FIELD)
+{
+    digital_video_broadasting::base_band_frame temporary(raw_data);
+    std::vector<std::byte> actual_data_field = temporary.get_data_field();
+    ASSERT_EQ(actual_data_field, data_field);
+}
+
+TEST(DVB, HEADER_AND_DATA_FIELD_TO_RAW_DATA)
+{
+    digital_video_broadasting::base_band_frame temporary(base_band_header, data_field);
+    std::vector<std::byte> actual_raw_data= temporary.get_raw_packet(sizeof(digital_video_broadasting::base_band_header_s) + data_field.size());
+    ASSERT_EQ(actual_raw_data,raw_data);
+
+}
+
+TEST(DVB, HEADER_AND_DATA_FIELD_TO_HEADER)
+{
+    digital_video_broadasting::base_band_frame temporary(base_band_header, data_field);
+    digital_video_broadasting::base_band_header_s actual_header = temporary.get_base_band_header();
+
+    ASSERT_EQ(actual_header.matype.transport_stream_input, base_band_header.matype.transport_stream_input);
+    ASSERT_EQ(actual_header.matype.single_input_stream, base_band_header.matype.single_input_stream);
+    ASSERT_EQ(actual_header.matype.constant_coding_and_modulation, base_band_header.matype.constant_coding_and_modulation);
+    ASSERT_EQ(actual_header.matype.input_stream_synchronization_indicator, base_band_header.matype.input_stream_synchronization_indicator);
+    ASSERT_EQ(actual_header.matype.null_packet_deletion, base_band_header.matype.null_packet_deletion);
+    ASSERT_EQ(actual_header.matype.transmition_roll_off_factor, base_band_header.matype.transmition_roll_off_factor);
+    ASSERT_EQ(actual_header.matype.matype_2, base_band_header.matype.matype_2);
+    ASSERT_EQ(actual_header.user_packet_length, base_band_header.user_packet_length);
+    ASSERT_EQ(actual_header.data_field_length, base_band_header.data_field_length);
+    ASSERT_EQ(actual_header.user_packet_sync, base_band_header.user_packet_sync);
+    ASSERT_EQ(actual_header.sync_distance, base_band_header.sync_distance);
+    ASSERT_EQ(actual_header.crc_8, base_band_header.crc_8);
+
+}
+
+TEST(DVB, HEADER_AND_DATA_FIELD_TO_DATA_FIELD)
+{
+    digital_video_broadasting::base_band_frame temporary(base_band_header, data_field);
+    std::vector<std::byte> actual_data_field = temporary.get_data_field();
+    ASSERT_EQ(actual_data_field, data_field);
+}
+
+TEST(DVB, RAW_DATA_TO_RAW_DATA)
+{
+    digital_video_broadasting::base_band_frame temporary(raw_data);
+    std::vector<std::byte> actual_raw_data= temporary.get_raw_packet(sizeof(digital_video_broadasting::base_band_header_s) + data_field.size());
+    ASSERT_EQ(actual_raw_data,raw_data);
 }
 
 TEST(DVB, CUSTOM_TEST)
@@ -53,7 +102,7 @@ int main(int argc, char **argv)
     base_band_header.data_field_length  = 0xA;
     base_band_header.user_packet_sync   = 0x47;
     base_band_header.sync_distance      = 65535;
-    
+
     size_t header_size_without_crc = sizeof(digital_video_broadasting::base_band_header_s) - sizeof(digital_video_broadasting::base_band_header_s::crc_8);
     std::vector<std::byte> calculate_header_crc(header_size_without_crc);
     std::memcpy(calculate_header_crc.data(), &base_band_header, header_size_without_crc);
