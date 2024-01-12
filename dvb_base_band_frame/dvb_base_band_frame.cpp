@@ -12,7 +12,8 @@ base_band_frame::base_band_frame(const std::vector<std::byte> &raw_data)
     std::memcpy(check_header_crc.data(), &base_band_header, header_size_without_crc);
     if (crc.calculate_crc(check_header_crc) != base_band_header.crc_8)
     {
-        throw std::runtime_error("CRC check failed!");
+        std::string error_message = "CRC check failed! "; 
+        throw std::runtime_error(error_message);
     }
     // Get the data_field from the bytes without the padding
     data_field.insert(data_field.begin(), raw_data.begin(), raw_data.begin() + base_band_header.data_field_length);
