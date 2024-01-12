@@ -53,7 +53,7 @@ enum class transmition_roll_off_factor_e : uint8_t
 struct [[gnu::packed]] matype_s
 {
     transport_stream_input_e transport_stream_input                                 : 2;
-    single_input_stream_e single_input_stream_                                      : 1;
+    single_input_stream_e single_input_stream                                       : 1;
     constant_coding_and_modulation_e constant_coding_and_modulation                 : 1;
     input_stream_synchronization_indicator_e input_stream_synchronization_indicator : 1;
     null_packet_deletion_e null_packet_deletion                                     : 1;
