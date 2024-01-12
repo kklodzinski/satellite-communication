@@ -1,7 +1,7 @@
 #ifndef BASE_BAND_FRAME
 #define BASE_BAND_FRAME
 
-#include "crc_library.hpp"
+#include <crc_library/crc_library.hpp>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
