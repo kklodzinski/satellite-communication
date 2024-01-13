@@ -1,4 +1,5 @@
 **/build
+**/coverage
 build
 .vscode
 CMakeLists.txt.user
