@@ -83,7 +83,7 @@ class base_band_frame
     base_band_frame(const base_band_header_s &base_band_header, const std::vector<std::byte> &data_field);
     base_band_header_s get_base_band_header();
     std::vector<std::byte> get_data_field();
-    std::vector<std::byte> get_raw_packet(const uint &packet_length);
+    std::vector<std::byte> get_raw_packet(const size_t &packet_length);
 };
 } // namespace digital_video_broadasting
 
