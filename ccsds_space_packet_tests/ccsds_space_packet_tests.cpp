@@ -43,7 +43,7 @@ TEST(CCSDS, PRIMARY_HEADER_AND_PAYLOAD_TO_RAW_DATA)
 TEST(CCSDS, PRIMARY_HEADER_AND_PAYLOAD_TO_PRIMARY_HEADER)
 {
     ccsds_space_packet::space_packet temporary(primary_header, payload);
-        ccsds_space_packet::primary_header_s actual_header = temporary.get_primary_header();
+    ccsds_space_packet::primary_header_s actual_header = temporary.get_primary_header();
 
     ASSERT_EQ(actual_header.packet_version_number, primary_header.packet_version_number);
     ASSERT_EQ(actual_header.packet_type, primary_header.packet_type);
