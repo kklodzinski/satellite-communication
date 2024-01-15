@@ -76,6 +76,7 @@ class base_band_frame
 {
   protected:
     crc_library::crc<uint8_t, 0xD5, 0x00, false, false, 0x00> crc;
+    prbs_lfsr::lfsr_library<uint16_t, 0b11, 0b100101010000000> lfsr;
     base_band_header_s base_band_header;
     std::vector<std::byte> data_field;
 
