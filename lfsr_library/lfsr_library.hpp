@@ -2,10 +2,10 @@
 #define LFSR_LIBRARY
 
 #include <array>
-#include <vector>
 #include <cstdint>
 #include <optional>
 #include <stdexcept>
+#include <vector>
 
 namespace prbs_lfsr
 {
@@ -50,15 +50,15 @@ template <valid_lfsr_type T, T xor_polynomial, T initial_value> class lfsr_libra
 
         for (T i = 0; !(size_of_output.has_value()) || i < size_of_output.value() * T_bit_size; ++i)
         {
-            T parity = 0;
-            T temp   = state_value;
+            T parity       = 0;
+            T temp         = state_value;
             T temp_xor_map = xor_polynomial;
             while (temp)
             {
                 T lookup_value = temp & 0xFF & temp_xor_map;
                 parity ^= lookup_table[lookup_value];
-                temp >>= sizeof(uint8_t)*8; // Shift by one byte;
-                temp_xor_map >>= sizeof(uint8_t)*8;
+                temp >>= sizeof(uint8_t) * 8; // Shift by one byte;
+                temp_xor_map >>= sizeof(uint8_t) * 8;
             }
 
             new_block = (new_block << 1) ^ parity;
@@ -68,14 +68,14 @@ template <valid_lfsr_type T, T xor_polynomial, T initial_value> class lfsr_libra
                 output.push_back(new_block);
                 new_block = 0;
             }
-            
+
             state_value = (parity << T_bit_size - 1) | (state_value >> 1);
 
             if (!size_of_output.has_value() && state_value == initial_value)
             {
                 if (new_block != 0)
                 {
-                    new_block<<= (T_bit_size-(i+1)%T_bit_size);
+                    new_block <<= (T_bit_size - (i + 1) % T_bit_size);
                     output.push_back(new_block);
                 }
                 break;

@@ -2,10 +2,10 @@
 #define BASE_BAND_FRAME
 
 #include <crc_library/crc_library.hpp>
-#include <lfsr_library/lfsr_library.hpp>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <lfsr_library/lfsr_library.hpp>
 #include <stdexcept>
 #include <vector>
 
