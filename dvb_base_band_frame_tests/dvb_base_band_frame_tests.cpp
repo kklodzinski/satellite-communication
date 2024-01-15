@@ -116,6 +116,49 @@ TEST(DVB, INCORRECT_CRC)
     ASSERT_THROW(digital_video_broadasting::base_band_frame temporary(incorrect_raw_data), std::runtime_error);
 }
 
+TEST(DVB, RAW_DATA_TO_SCRAMBLED_DATA)
+{
+    digital_video_broadasting::base_band_frame temporary(raw_data);
+    std::vector<std::byte> actual_scrambled_data =
+    temporary.get_scrambled_packet(raw_data.size());
+
+    prbs_lfsr::lfsr_library<uint16_t, 0b11, 0b100101010000000> lfsr;
+    std::vector<uint16_t> lfsr_bits = lfsr.calculate_lsfr(raw_data.size()/sizeof(uint8_t));
+
+    std::vector<std::byte> temp(raw_data.size(),std::byte(0x0));
+    std::memcpy(temp.data(), lfsr_bits.data(), temp.size());
+
+    std::vector<std::byte> scrambled_data;
+    for(size_t i =0; i< raw_data.size();++i)
+    {
+        scrambled_data.push_back(raw_data[i]^temp[i]);
+    }
+
+    ASSERT_EQ(actual_scrambled_data, scrambled_data);
+}
+
+TEST(DVB, HEADER_AND_DATA_FIELD_TO_SCRAMBLED_DATA)
+{
+    digital_video_broadasting::base_band_frame temporary(base_band_header, data_field);
+
+    std::vector<std::byte> actual_scrambled_data =
+    temporary.get_scrambled_packet(sizeof(digital_video_broadasting::base_band_header_s) + data_field.size());
+
+    prbs_lfsr::lfsr_library<uint16_t, 0b11, 0b100101010000000> lfsr;
+    std::vector<uint16_t> lfsr_bits = lfsr.calculate_lsfr(raw_data.size()/sizeof(uint8_t));
+
+    std::vector<std::byte> temp(raw_data.size(),std::byte(0x0));
+    std::memcpy(temp.data(), lfsr_bits.data(), temp.size());
+
+    std::vector<std::byte> scrambled_data;
+    for(size_t i =0; i< raw_data.size();++i)
+    {
+        scrambled_data.push_back(raw_data[i]^temp[i]);
+    }
+
+    ASSERT_EQ(actual_scrambled_data, scrambled_data);
+}
+
 TEST(DVB, CUSTOM_TEST)
 {
     size_t header_size_without_crc = sizeof(digital_video_broadasting::base_band_header_s) -
