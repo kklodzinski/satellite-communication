@@ -57,4 +57,23 @@ std::vector<std::byte> base_band_frame::get_raw_packet(const size_t &packet_leng
     return output;
 }
 
+std::vector<std::byte> base_band_frame::get_scrambled_packet(const size_t &packet_length)
+{
+    std::vector<std::byte> output;
+
+    std::vector<std::byte> raw_packet = base_band_frame::get_raw_packet(packet_length);
+    prbs_lfsr::lfsr_library<uint16_t, 0b11, 0b100101010000000> lfsr;
+    std::vector<uint16_t> lfsr_bits =  lfsr.calculate_lsfr(packet_length/sizeof(uint16_t)); //get correct number of bits
+    
+    std::vector<std::byte> temp(packet_length,std::byte(0x0));
+    std::memcpy(temp.data(), lfsr_bits.data(), temp.size());
+
+    for(size_t i =0; i< raw_packet.size();++i)
+    {
+        output.push_back(raw_packet[i]^temp[i]);
+    }
+
+    return output;
+}
+
 } // namespace digital_video_broadasting
