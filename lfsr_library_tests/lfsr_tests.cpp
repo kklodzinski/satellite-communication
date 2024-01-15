@@ -148,6 +148,12 @@ TEST(LFSR32, LFSR32_PARTIAL)
                                           0b00011000111101100110110001011011};
     ASSERT_EQ(lfsr.calculate_lsfr(2), expected_output);
 }
+
+TEST(LFSR, INCORRECT_INITIAL_VALUE)
+{
+    prbs_lfsr::lfsr_library<uint32_t, 0b0001000010000001, 0> lfsr;
+    ASSERT_THROW(lfsr.calculate_lsfr(), std::invalid_argument);
+}
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
